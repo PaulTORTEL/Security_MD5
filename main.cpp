@@ -7,7 +7,7 @@ using namespace std;
 int emptyString(string str){
     int passwordSize = str.length();
     int blocks = ((passwordSize + 8)/64) + 1;
-    cout << blocks << endl;
+    cout << "size : " << passwordSize << " | blocks : " << blocks << endl;
 
 
     int emptySize = passwordSize%64;
@@ -20,15 +20,17 @@ int emptyString(string str){
 
     if(sizeToFull < 0 && sizeToFull > -8){
         sizeToFull = 56 + sizeToFull;
+        sizeToFull += 8; /* Si on est obligé d'avoir un bloc en plus, par exemple si la taille du password est de 61 octets*/
     }
-    sizeToFull = sizeToFull + (8 * blocks);
+    sizeToFull = sizeToFull + 8; /* On a besoin de rajouter 8 octets pour arriver aux 64 */
 
     return sizeToFull;
 }
 
 int main()
 {
-    string password = "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
+    string password = "0123456789";
+
     int passwordSize = password.length();
     int sizeToFull = emptyString(password);
     int totalSize = passwordSize + sizeToFull;
