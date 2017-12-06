@@ -47,7 +47,7 @@ int main()
     }
 
     for (unsigned int i = 0; i < totalSize; i++) {
-        cout << i+1 << " => " << bitset<8>(newPassword[i]) << endl;
+        std::cout << i+1 << " => " << std::bitset<8>(newPassword[i]) << std::endl;
     }
 
     free(newPassword);
