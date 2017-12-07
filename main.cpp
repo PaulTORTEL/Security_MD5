@@ -18,6 +18,30 @@ int padding(int passwordLen) {
 
 }
 
+int numberOfBlocks(int passwordLen){
+
+    int blocks = 0;
+    int i = 1;
+
+    // We have to know how large is the number representing the length of the password
+    // So we have to calculate how many bits we need to represent it, and we work with blocs of 8 bits
+    while(passwordLen > i){
+        blocks++;
+        i=i*256;
+    }
+    return blocks;
+}
+
+void intToHex(int numberBlocks,int passwordLen,char* blocks){
+
+    // We calculate each block, then we divide by 256 : 256 = 2^8, meaning the binary number will be pushed by 8 bits to the right
+    // for example 111100000001111 / 256 = 11110000
+    for(int i = 0;i<numberBlocks;i++){
+        blocks[i] = passwordLen%(256);
+        passwordLen = passwordLen/256;
+    }
+}
+
 int main()
 {
 /*
@@ -25,11 +49,15 @@ int main()
     generator.generatePws();
     generator.displayPws();*/
 
-    std::string password = "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678";
+    std::string password = "0123456789";
     int bytesMissing = padding(password.length());
     unsigned int totalSize = password.length() + 1 + 8 + bytesMissing;
 
     char* newPassword = (char*) malloc(totalSize * sizeof(char));
+
+    int numberBlocks = numberOfBlocks(password.length());
+    char* blocks = (char*) malloc(numberBlocks * sizeof(char));
+    intToHex(numberBlocks,password.length(),blocks);
 
     for (unsigned int i = 0; i < totalSize; i++) {
 
@@ -42,8 +70,11 @@ int main()
         else if (i < (totalSize - 8))
             newPassword[i] = '\x00';
 
-        else
-            newPassword[i] = 'A';
+        else{
+            if(i >= totalSize - numberBlocks)
+                newPassword[i] = blocks[(totalSize-i)-1]; //Last block :newPassword[i] = blocks[0] ; i < totalSize => we need to remove 1 to totalSize-i
+                                                          //or we can never reach blocks[0], because i is always smaller
+        }
     }
 
     for (unsigned int i = 0; i < totalSize; i++) {
@@ -51,5 +82,6 @@ int main()
     }
 
     free(newPassword);
+    free(blocks);
 
 }
