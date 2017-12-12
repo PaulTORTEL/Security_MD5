@@ -1,6 +1,7 @@
 #include "operations.h"
 #include "Utils.h"
 #include <bitset>
+#include <math.h>
 
 int padding(int passwordLen) {
 
@@ -48,7 +49,6 @@ int main()
     char wordC[4] = {'\xfe','\xdc','\xba','\x98'};
     char wordD[4] = {'\x76','\x54','\x32','\x10'};
 
-
 /*
     PwGenerator generator = PwGenerator();
     generator.generatePws();
@@ -87,11 +87,35 @@ int main()
         std::cout << i+1 << " => " << std::bitset<8>(newPassword[i]) << std::endl;
     }
 
-
-
-
-
-
+    unsigned long T[64] = {
+        1,2,3,4,
+        5,6,7,8,
+        9,10,11,12,
+        13,14,15,16,
+        17,18,19,20,
+        21,22,23,24,
+        25,26,27,28,
+        29,30,31,32,
+        33,34,35,36,
+        37,38,39,40,
+        41,42,43,44,
+        45,46,47,48,
+        49,50,51,52,
+        53,54,55,56,
+        57,58,59,60,
+        61,62,63,64
+    };
+    for(int i = 0;i<64;i++){
+        float temp = ((int) T[i]* 3.14159265359)/180 ;
+        float temp2 = sin(temp);
+        if(temp2 < 0)
+            temp2 = -(temp2);
+        long long x = 4294967296;
+        x = x * temp2;
+        T[i] = x;
+        std::cout << T[i];
+        std::cout << " => " << std::bitset<32>(T[i]) << std::endl;
+    }
 
 
 
