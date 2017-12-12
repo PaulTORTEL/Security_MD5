@@ -42,6 +42,27 @@ void intToHex(int numberBlocks,int passwordLen,char* blocks){
     }
 }
 
+char** segmentMessage(char* message, int length) {
+
+    char **result = (char**) malloc(16 * sizeof(char*));
+    for (int i = 0; i < 16; i++)
+        result[i] = newString(4);
+
+    int counter = 0;
+
+    for (int i = 0; i < length; i++) {
+
+        if (i != 0 && i % 4 == 0) {
+            counter++;
+        }
+
+        result[counter][i%4] = message[i];
+
+    }
+
+    return result;
+}
+
 int main()
 {
     char wordA[4] = {'\x01','\x23','\x45','\x67'};
@@ -58,10 +79,10 @@ int main()
     int bytesMissing = padding(password.length());
     unsigned int totalSize = password.length() + 1 + 8 + bytesMissing;
 
-    char* newPassword = (char*) malloc(totalSize * sizeof(char));
+    char* newPassword = newString(totalSize);
 
     int numberBlocks = numberOfBlocks(password.length());
-    char* blocks = (char*) malloc(numberBlocks * sizeof(char));
+    char* blocks = newString(numberBlocks);
     intToHex(numberBlocks,password.length()*8,blocks);
 
     for (unsigned int i = 0; i < totalSize; i++) {
@@ -117,8 +138,24 @@ int main()
         std::cout << " => " << std::bitset<32>(T[i]) << std::endl;
     }
 
+    printf("\n\nle M :\n");
+    char** M = segmentMessage(newPassword, totalSize);
+    for (int i = 0; i < 16; i++) {
+        printf("%d => ", i+1);
+        for (int j = 0; j < 4; j++) {
+            printf("%c", M[i][j]);
+        }
+        printf("\n");
+    }
+
+    for (int i = 0; i < 16; i++)
+        free(M[i]);
+
+    free(M);
+
+
 
 
     free(newPassword);
-    //free(blocks);
+    free(blocks);
 }
