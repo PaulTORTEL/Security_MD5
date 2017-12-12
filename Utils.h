@@ -4,6 +4,6 @@
 #include <stdio.h>
 #include <iostream>
 #include <stdlib.h>
-#include <string>
+#include <string.h>
 
 #endif // UTILS_H_INCLUDED
