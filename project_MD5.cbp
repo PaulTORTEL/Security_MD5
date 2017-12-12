@@ -32,10 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="include/PwGenerator.h" />
-		<Unit filename="include/Utils.h" />
+		<Unit filename="PwGenerator.cpp" />
+		<Unit filename="PwGenerator.h" />
+		<Unit filename="Utils.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="src/PwGenerator.cpp" />
+		<Unit filename="operations.cpp" />
+		<Unit filename="operations.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
