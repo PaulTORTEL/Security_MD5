@@ -1,7 +1,5 @@
-#include "include/PwGenerator.h"
-#include "include/Utils.h"
 #include "operations.h"
-
+#include "Utils.h"
 #include <bitset>
 
 int padding(int passwordLen) {
