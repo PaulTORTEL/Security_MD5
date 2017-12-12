@@ -44,12 +44,18 @@ void intToHex(int numberBlocks,int passwordLen,char* blocks){
 
 int main()
 {
+    char wordA[4] = {'\x01','\x23','\x45','\x67'};
+    char wordB[4] = {'\x89','\xab','\xcd','\xef'};
+    char wordC[4] = {'\xfe','\xdc','\xba','\x98'};
+    char wordD[4] = {'\x76','\x54','\x32','\x10'};
+
+
 /*
     PwGenerator generator = PwGenerator();
     generator.generatePws();
     generator.displayPws();*/
 
-    std::string password = "0123456789";
+    std::string password = "BONJOUR";
     int bytesMissing = padding(password.length());
     unsigned int totalSize = password.length() + 1 + 8 + bytesMissing;
 
@@ -57,7 +63,7 @@ int main()
 
     int numberBlocks = numberOfBlocks(password.length());
     char* blocks = (char*) malloc(numberBlocks * sizeof(char));
-    intToHex(numberBlocks,password.length(),blocks);
+    intToHex(numberBlocks,password.length()*8,blocks);
 
     for (unsigned int i = 0; i < totalSize; i++) {
 
@@ -74,14 +80,21 @@ int main()
             if(i >= totalSize - numberBlocks)
                 newPassword[i] = blocks[(totalSize-i)-1]; //Last block :newPassword[i] = blocks[0] ; i < totalSize => we need to remove 1 to totalSize-i
                                                           //or we can never reach blocks[0], because i is always smaller
+            else
+                newPassword[i] = '\x00';
         }
     }
-
     for (unsigned int i = 0; i < totalSize; i++) {
         std::cout << i+1 << " => " << std::bitset<8>(newPassword[i]) << std::endl;
     }
 
-    free(newPassword);
-    free(blocks);
 
+
+
+
+
+
+
+    free(newPassword);
+    //free(blocks);
 }
