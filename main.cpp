@@ -1,5 +1,6 @@
 #include "include/PwGenerator.h"
 #include "include/Utils.h"
+#include "operations.h"
 
 #include <bitset>
 
@@ -80,6 +81,7 @@ int main()
     for (unsigned int i = 0; i < totalSize; i++) {
         std::cout << i+1 << " => " << std::bitset<8>(newPassword[i]) << std::endl;
     }
+
 
     free(newPassword);
     free(blocks);
