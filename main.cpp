@@ -3,66 +3,6 @@
 #include <bitset>
 #include <math.h>
 
-int padding(int passwordLen) {
-
-    // Empty space for the last block
-    int emptySpace = 64 - (((passwordLen + 1) % 64) + 8);
-
-    // Empty space can be negative if passwordLen+1 % 64 is close to 64 but still < 64.
-    // So adding +8 (size of the password in bytes) and we go over 64.
-    // We just need to calculate the empty space in the previous block + new block of 64 bytes which is 64 - 8 (size) = 56
-    if (emptySpace < 0)
-        emptySpace = (64 - ((passwordLen + 1) % 64)) + 56;
-
-    return emptySpace;
-
-}
-
-int numberOfBlocks(int passwordLen){
-
-    int blocks = 0;
-    int i = 1;
-
-    // We have to know how large is the number representing the length of the password
-    // So we have to calculate how many bits we need to represent it, and we work with blocs of 8 bits
-    while(passwordLen > i){
-        blocks++;
-        i=i*256;
-    }
-    return blocks;
-}
-
-void intToHex(int numberBlocks,int passwordLen,char* blocks){
-
-    // We calculate each block, then we divide by 256 : 256 = 2^8, meaning the binary number will be pushed by 8 bits to the right
-    // for example 111100000001111 / 256 = 11110000
-    for(int i = 0;i<numberBlocks;i++){
-        blocks[i] = passwordLen%(256);
-        passwordLen = passwordLen/256;
-
-    }
-}
-
-char** segmentMessage(char* message, int length) {
-
-    char **result = (char**) malloc(16 * sizeof(char*));
-    for (int i = 0; i < 16; i++)
-        result[i] = newString(4);
-
-    int counter = 0;
-
-    for (int i = 0; i < length; i++) {
-
-        if (i != 0 && i % 4 == 0) {
-            counter++;
-        }
-
-        result[counter][i%4] = message[i];
-
-    }
-
-    return result;
-}
 
 int main()
 {
@@ -109,6 +49,7 @@ int main()
         std::cout << i+1 << " => " << std::bitset<8>(newPassword[i]) << std::endl;
     }
 
+    // Sin array
     unsigned long T[64];
 
     for(int i = 0; i < 64;i++){
@@ -124,22 +65,27 @@ int main()
     }
 
     printf("\n\nle M :\n");
+
+    // M is the segmented Message converted in bits
     char** M = segmentMessage(newPassword, totalSize);
-    for (int i = 0; i < 16; i++) {
-        printf("%d => ", i+1);
-        for (int j = 0; j < 4; j++) {
-            printf("%c", M[i][j]);
+
+    for (int counter = 0; counter < 16; counter++) {
+
+        for (int i = 0; i < 4; i++) {
+
+            printf("%d (%c) => ", counter+1, newPassword[counter*4 + i]);
+
+            for (int j = 0; j < 8; j++)
+                printf("%d ", M[counter][(i*8)%32 + j]);
+
+            printf("\n");
         }
-        printf("\n");
     }
 
     for (int i = 0; i < 16; i++)
         free(M[i]);
 
     free(M);
-
-
-
 
     free(newPassword);
     free(blocks);
