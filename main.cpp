@@ -18,7 +18,7 @@ int emptyString(string str){
     int sizeToFullBits = sizeToFull * 8;
     cout << "Size to full : " << sizeToFull << " octets| " << sizeToFullBits << " bits" <<endl;
 
-    if(sizeToFull < 0 && sizeToFull > -8){
+    if(sizeToFull <= 0 && sizeToFull > -8){
         sizeToFull = 56 + sizeToFull;
         sizeToFull += 8; /* Si on est obligé d'avoir un bloc en plus, par exemple si la taille du password est de 61 octets*/
     }
@@ -29,7 +29,7 @@ int emptyString(string str){
 
 int main()
 {
-    string password = "0123456789";
+    string password = "01234567890123456789012345678901234567890123456789012345";
 
     int passwordSize = password.length();
     int sizeToFull = emptyString(password);
