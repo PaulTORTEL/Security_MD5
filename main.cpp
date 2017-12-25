@@ -50,16 +50,22 @@ int main()
     }
 
     // Sin array
-    unsigned long T[64];
+    unsigned int T[64];
 
     for(int i = 0; i < 64;i++){
-        float temp = ((int) (i+1) * 3.14159265359)/180 ;
-        float temp2 = sin(temp);
+        /*float temp = ((int) (i+1) * 3.14159265359)/180 ;
+        float temp2 = sin((i+1));
         if(temp2 < 0)
-            temp2 = -(temp2);
-        long long x = 4294967296;
+            temp2 = fabs(temp2 * x);
+
         x = x * temp2;
-        T[i] = x;
+        T[i] = x;*/
+
+        long long x = 4294967296;
+
+        T[i] = fabs(sin((i+1))) * x;
+
+        //printf("0x%x", T[i]);
         std::cout << T[i];
         std::cout << " => " << std::bitset<32>(T[i]) << std::endl;
     }
