@@ -77,7 +77,7 @@ int main()
     printf("\n\nle M :\n");
 
     // M is the segmented Message converted in bits
-    char** M = segmentMessage(newPassword, totalSize);
+    char** X = segmentMessage(newPassword, totalSize);
 
     for (int counter = 0; counter < 16; counter++) {
 
@@ -86,11 +86,13 @@ int main()
             printf("%d (%c) => ", counter*4+i+1, newPassword[counter*4 + i]);
 
             for (int j = 0; j < 8; j++)
-                printf("%d ", M[counter][(i*8)%32 + j]);
+                printf("%d ", X[counter][(i*8)%32 + j]);
 
             printf("\n");
         }
     }
+
+
 
     // main loop
     // ne marche absolument pas pour le moment
@@ -124,9 +126,9 @@ int main()
 */
 
     for (int i = 0; i < 16; i++)
-        free(M[i]);
+        free(X[i]);
 
-    free(M);
+    free(X);
 
     free(newPassword);
     free(blocks);
