@@ -253,3 +253,13 @@ char *appendArrays(char* array1,char* array2,char* array3,char* array4 ) {
 
     return result;
 }
+
+char *copyArray(char *array2){
+
+    char *result = newString(32);
+    for(int i = 0; i < 32; i++){
+        result[i] = array2[i];
+    }
+
+    return result;
+}
