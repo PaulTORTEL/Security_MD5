@@ -189,6 +189,16 @@ char *HexToBinary(unsigned char X[4]){
     return result;
 }
 
+char *IntToBinary(unsigned int Ti){
+
+    char *result = newString(32);
+    unsigned int temp = Ti;
+    for(int i = 31; i>=0;i--){
+        result[i] = temp%2;
+        temp /= 2;
+    }
+    return result;
+}
 
 char* shiftArrayByS(char* array, int s, int length) {
 
@@ -216,3 +226,30 @@ char *AdditionBit(char X[32],char Y[32]){
     return result;
 }
 
+char *reverseArray(char* array, int length) {
+
+    char* result = newString(length);
+
+    for (int i = 0; i < length; i++)
+        result[i] = array[(length-i)-1];
+
+    return result;
+}
+
+char *appendArrays(char* array1,char* array2,char* array3,char* array4 ) {
+
+    char* result = newString(128);
+
+    for (int i = 0; i < 128; i++){
+        if(i < 32)
+            result[i] = array1[i];
+        else if (i < 64)
+            result[i] = array2[i%32];
+        else if (i < 96)
+            result[i] = array3[i%32];
+        else
+            result[i] = array4[i%32];
+    }
+
+    return result;
+}

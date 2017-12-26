@@ -1,5 +1,6 @@
 #include "operations.h"
 #include "Utils.h"
+#include "ArraysUtils.h"
 #include <bitset>
 #include <math.h>
 
@@ -97,39 +98,105 @@ int main()
     // main loop
     // ne marche absolument pas pour le moment
 
-    /*char* f;
+    char *roundResult;
+    char *AA = newString(32);
+    char *BB = newString(32);
+    char *CC = newString(32);
+    char *DD = newString(32);
 
-    for(int i = 0; i < 16 ; i++){
-        if(i < 16){
-            f = FBit(BBit,CBit,DBit);
-            for(int i = 0; i < 32;i++){
-                printf("%d",f[i]);
-                if((i+1)%4 == 0)
-                    printf(" ");
+    AA = strcpy(AA,ABit);
+    BB = strcpy(BB,BBit);
+    CC = strcpy(CC,CBit);
+    DD = strcpy(DD,DBit);
+
+    for(int j = 0;j < 16;j++){
+
+        for(int i = 0; i < 64 ; i++){
+
+            char *firstAddition,*secondAddition,*finalAddition;
+            int k=ArraysUtils::KValues[i];
+            int s=ArraysUtils::SValues[i];
+            if(i < 16){
+
+                firstAddition = AdditionBit(ABit,FBit(BBit,CBit,DBit));
+                IntToBinary(T[i]);
+                secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
+                finalAddition = AdditionBit(firstAddition,secondAddition);
+
+                roundResult = shiftArrayByS(finalAddition,s,32);
             }
-            printf("\n");
+            else if(i < 32){
 
+                firstAddition = AdditionBit(ABit,GBit(BBit,CBit,DBit));
+                secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
+                finalAddition = AdditionBit(firstAddition,secondAddition);
+
+                roundResult = shiftArrayByS(finalAddition,s,32);
+            }
+            else if(i < 48){
+
+                firstAddition = AdditionBit(ABit,HBit(BBit,CBit,DBit));
+                secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
+                finalAddition = AdditionBit(firstAddition,secondAddition);
+
+                roundResult = shiftArrayByS(finalAddition,s,32);
+            }
+            else{
+
+                firstAddition = AdditionBit(ABit,IBit(BBit,CBit,DBit));
+                secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
+                finalAddition = AdditionBit(firstAddition,secondAddition);
+
+                roundResult = shiftArrayByS(finalAddition,s,32);
+            }
+
+            free(firstAddition);
+            free(secondAddition);
+            free(finalAddition);
+
+            ABit = DBit;
+            DBit = CBit;
+            CBit = BBit;
+            BBit = roundResult;
         }
 
-    }*/
-/*
-    for (int i = 0; i < 32; i++) {
-        printf("%d ", M[0][i]);
+        ABit = AdditionBit(ABit,AA);
+        BBit = AdditionBit(BBit,BB);
+        CBit = AdditionBit(CBit,CC);
+        DBit = AdditionBit(DBit,DD);
     }
-    printf("\nappres : \n");
-    char* test = shiftArrayByS(M[0], 2, 32);
-    for (int i = 0; i < 32; i++) {
-        printf("%d ", test[i]);
+    char *resultA = reverseArray(ABit,32);
+    char *resultB = reverseArray(BBit,32);
+    char *resultC = reverseArray(CBit,32);
+    char *resultD = reverseArray(DBit,32);
+
+    char *finalMessage = appendArrays(resultA,resultB,resultC,resultD);
+
+    for(int i = 0; i < 128; i++){
+        printf("%d",finalMessage[i]);
+        if((i+1)%4 == 0)
+            printf(" ");
+        if((i+1)%16 == 0)
+            printf("\n");
     }
 
-    free(test);
-*/
+    free(roundResult);
+
+    free(resultA);
+    free(resultB);
+    free(resultC);
+    free(resultD);
+
+    free(ABit);
+    free(BBit);
+    free(CBit);
+    free(DBit);
+
 
     for (int i = 0; i < 16; i++)
         free(X[i]);
 
     free(X);
-
     free(newPassword);
     free(blocks);
 }

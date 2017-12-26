@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -35,9 +37,11 @@
 		<Unit filename="PwGenerator.cpp" />
 		<Unit filename="PwGenerator.h" />
 		<Unit filename="Utils.h" />
+		<Unit filename="include/ArraysUtils.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="operations.cpp" />
 		<Unit filename="operations.h" />
+		<Unit filename="src/ArraysUtils.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

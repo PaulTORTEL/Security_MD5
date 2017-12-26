@@ -13,9 +13,13 @@ char* HBit(char X[32], char Y[32], char Z[32]);
 char* IBit(char X[32], char Y[32], char Z[32]);
 
 char *HexToBinary(unsigned char X[4]);
+char *IntToBinary(unsigned int Ti);
 
 char* shiftArrayByS(char* array, int s, int length);
 
 char *AdditionBit(char X[32],char Y[32]);
+char *reverseArray(char* array, int length);
+char *appendArrays(char* array1,char* array2,char* array3,char* array4 );
+
 
 #endif // OPERATIONS_H_INCLUDED
