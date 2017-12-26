@@ -5,10 +5,10 @@
 
 int main()
 {
-    unsigned char wordA[4] = {'\x01','\x23','\x45','\x67'};
-    unsigned char wordB[4] = {'\x89','\xab','\xcd','\xef'};
-    unsigned char wordC[4] = {'\xfe','\xdc','\xba','\x98'};
-    unsigned char wordD[4] = {'\x76','\x54','\x32','\x10'};
+    unsigned char wordA[4] = {(unsigned char)'\x01',(unsigned char)'\x23',(unsigned char)'\x45',(unsigned char)'\x67'};
+    unsigned char wordB[4] = {(unsigned char)'\x89',(unsigned char)'\xab',(unsigned char)'\xcd',(unsigned char)'\xef'};
+    unsigned char wordC[4] = {(unsigned char)'\xfe',(unsigned char)'\xdc',(unsigned char)'\xba',(unsigned char)'\x98'};
+    unsigned char wordD[4] = {(unsigned char)'\x76',(unsigned char)'\x54',(unsigned char)'\x32',(unsigned char)'\x10'};
 
     char *ABit = HexToBinary(wordA);
     char *BBit = HexToBinary(wordB);
@@ -110,7 +110,18 @@ int main()
         }
 
     }*/
+/*
+    for (int i = 0; i < 32; i++) {
+        printf("%d ", M[0][i]);
+    }
+    printf("\nappres : \n");
+    char* test = shiftArrayByS(M[0], 2, 32);
+    for (int i = 0; i < 32; i++) {
+        printf("%d ", test[i]);
+    }
 
+    free(test);
+*/
 
     for (int i = 0; i < 16; i++)
         free(M[i]);

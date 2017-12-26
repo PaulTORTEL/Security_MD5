@@ -19,4 +19,6 @@ char* IBit(char X[32], char Y[32], char Z[32]);
 
 char *HexToBinary(unsigned char X[4]);
 
+char* shiftArrayByS(char* array, int s, int length);
+
 #endif // OPERATIONS_H_INCLUDED

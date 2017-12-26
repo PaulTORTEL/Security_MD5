@@ -286,4 +286,12 @@ char *HexToBinary(unsigned char X[4]){
     return result;
 }
 
+char* shiftArrayByS(char* array, int s, int length) {
 
+    char* result = newString(length);
+
+    for (int i = 0; i < length; i++)
+        result[((i+s)%length)] = array[i];
+
+    return result;
+}
