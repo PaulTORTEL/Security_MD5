@@ -72,7 +72,7 @@ char** segmentMessage(char* message, int length) {
     return result;
 }
 
-char* And(char X[4], char Y[4]) {
+/*char* And(char X[4], char Y[4]) {
 
     char* result = newString(4);
 
@@ -167,4 +167,123 @@ char* I(char X[4], char Y[4], char Z[4]) {
     free(XNotZ);
 
     return result;
+}*/
+
+// AND Operation when we work with a char representing a bit
+char* AndBit(char X[32], char Y[32]) {
+
+    char* result = newString(32);
+
+    for (unsigned int i = 0; i < 32; i++) {
+        result[i] = X[i] & Y[i];
+    }
+
+    return result;
 }
+
+// OR Operation when we work with a char representing a bit
+char* OrBit(char X[32], char Y[32]) {
+
+    char* result = newString(32);
+
+    for (unsigned int i = 0; i < 32; i++) {
+        result[i] = X[i] | Y[i];
+    }
+
+    return result;
+}
+
+// NOT Operation when we work with a char representing a bit
+char* NotBit(char X[32]) {
+
+    char* result = newString(32);
+
+    for (unsigned int i = 0; i < 32; i++) {
+        result[i] = (X[i]+1)%2;
+    }
+
+    return result;
+}
+
+// XOR Operation when we work with a char representing a bit
+char* XorBit(char X[32], char Y[32]) {
+
+    char* result = newString(32);
+
+    for (unsigned int i = 0; i < 32; i++) {
+        result[i] = X[i] ^ Y[i];
+    }
+
+    return result;
+}
+
+// F method
+char* FBit(char X[32], char Y[32], char Z[32]) {
+
+    char* XY = AndBit(X, Y);
+    char* NotX = NotBit(X);
+    char* NotXZ = AndBit(NotX, Z);
+
+    char* result = OrBit(XY, NotXZ);
+
+    free(XY);
+    free(NotX);
+    free(NotXZ);
+
+    return result;
+}
+
+// G method
+char* GBit(char X[32], char Y[32], char Z[32]) {
+
+    char* XZ = AndBit(X, Z);
+    char* NotZ = NotBit(Z);
+    char* YNotZ = AndBit(Y, NotZ);
+
+    char* result = OrBit(XZ, YNotZ);
+
+    free(XZ);
+    free(NotZ);
+    free(YNotZ);
+
+    return result;
+}
+
+// H method
+char* HBit(char X[32], char Y[32], char Z[32]) {
+
+    char* XxorY = XorBit(X, Y);
+    char* result = XorBit(XxorY, Z);
+
+    free(XxorY);
+
+    return result;
+}
+
+// I method
+char* IBit(char X[32], char Y[32], char Z[32]) {
+
+    char* NotZ = NotBit(Z);
+    char* XNotZ = OrBit(X, NotZ);
+    char* result = XorBit(Y, XNotZ);
+
+    free(NotZ);
+    free(XNotZ);
+
+    return result;
+}
+
+char *HexToBinary(unsigned char X[4]){
+
+    char *result = newString(32);
+    for(int i = 0; i<4;i++){
+        int temp = X[i];
+        for(int j = 7; j>=0;j--){
+            result[i*8 + j] = temp%2;
+            temp /= 2;
+        }
+    }
+    return result;
+}
+
+

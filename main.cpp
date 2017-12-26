@@ -3,13 +3,17 @@
 #include <bitset>
 #include <math.h>
 
-
 int main()
 {
-    char wordA[4] = {'\x01','\x23','\x45','\x67'};
-    char wordB[4] = {'\x89','\xab','\xcd','\xef'};
-    char wordC[4] = {'\xfe','\xdc','\xba','\x98'};
-    char wordD[4] = {'\x76','\x54','\x32','\x10'};
+    unsigned char wordA[4] = {'\x01','\x23','\x45','\x67'};
+    unsigned char wordB[4] = {'\x89','\xab','\xcd','\xef'};
+    unsigned char wordC[4] = {'\xfe','\xdc','\xba','\x98'};
+    unsigned char wordD[4] = {'\x76','\x54','\x32','\x10'};
+
+    char *ABit = HexToBinary(wordA);
+    char *BBit = HexToBinary(wordB);
+    char *CBit = HexToBinary(wordC);
+    char *DBit = HexToBinary(wordD);
 
 /*
     PwGenerator generator = PwGenerator();
@@ -79,7 +83,7 @@ int main()
 
         for (int i = 0; i < 4; i++) {
 
-            printf("%d (%c) => ", counter+1, newPassword[counter*4 + i]);
+            printf("%d (%c) => ", counter*4+i+1, newPassword[counter*4 + i]);
 
             for (int j = 0; j < 8; j++)
                 printf("%d ", M[counter][(i*8)%32 + j]);
@@ -87,6 +91,26 @@ int main()
             printf("\n");
         }
     }
+
+    // main loop
+    // ne marche absolument pas pour le moment
+
+    /*char* f;
+
+    for(int i = 0; i < 16 ; i++){
+        if(i < 16){
+            f = FBit(BBit,CBit,DBit);
+            for(int i = 0; i < 32;i++){
+                printf("%d",f[i]);
+                if((i+1)%4 == 0)
+                    printf(" ");
+            }
+            printf("\n");
+
+        }
+
+    }*/
+
 
     for (int i = 0; i < 16; i++)
         free(M[i]);
