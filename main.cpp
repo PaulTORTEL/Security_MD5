@@ -104,7 +104,6 @@ int main()
     char *CC = newString(32);
     char *DD = newString(32);
 
-    AA = strcpy(AA,ABit);
     BB = strcpy(BB,BBit);
     CC = strcpy(CC,CBit);
     DD = strcpy(DD,DBit);
@@ -116,10 +115,10 @@ int main()
             char *firstAddition,*secondAddition,*finalAddition;
             int k=ArraysUtils::KValues[i];
             int s=ArraysUtils::SValues[i];
+
             if(i < 16){
 
                 firstAddition = AdditionBit(ABit,FBit(BBit,CBit,DBit));
-                IntToBinary(T[i]);
                 secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
                 finalAddition = AdditionBit(firstAddition,secondAddition);
 
