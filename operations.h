@@ -21,6 +21,9 @@ char *AdditionBit(char X[32],char Y[32]);
 char *reverseArray(char* array, int length);
 char *appendArrays(char* array1,char* array2,char* array3,char* array4 );
 char *copyArray(char *array2);
+char *littleEndian2Blocks(char *array);
+void displayAsHex(char *table, long tabsize);
+void displayBitTable(char *table, long tabsize);
 
 
 #endif // OPERATIONS_H_INCLUDED
