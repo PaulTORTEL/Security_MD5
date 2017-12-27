@@ -21,12 +21,12 @@ int main()
     generator.generatePws();
     generator.displayPws();*/
 
-    std::string password = "BONJOURBONJOURBONJOURBONJOURBONJOURBONJOUR";
+    std::string password = "IL EN FAUT PEU POUR ETRE HEUREUX, VRAIMENT TRES PEU POUR ETRE HEUREUX, IL FAUT SE SATISFAIRE DU NECESSAIRE";
+    //std::string password = "BONJOUR";
     int bytesMissing = padding(password.length());
     unsigned int totalSize = password.length() + 1 + 8 + bytesMissing;
 
     char* newPassword = newString(totalSize);
-
     int numberBlocks = numberOfBlocks(password.length());
 
     // "blocks" stores the size of the message
@@ -94,7 +94,7 @@ int main()
 
     char **passwordBeforeHash = passwordReadyToHash(newPassword,numberBlocks);
 
-    for(int j = 0;j < 1/*numberBlocks*/;j++){
+    for(int j = 0;j < numberBlocks;j++){
 
 
         // M is the segmented Message converted in bits
@@ -113,18 +113,26 @@ int main()
                 printf("\n");
             }
         }
-        char *endianConversion = newString(64);
-        for(int i = 14; i< 16;i++){
-            for(int j = 0; j < 32 ; j++){
-                endianConversion[(i-14)*32+j] = X[i][j];
+        if(j == numberBlocks-1){
+            char *endianConversion = newString(64);
+            for(int i = 14; i< 16;i++){
+                for(int j = 0; j < 32 ; j++){
+                    endianConversion[(i-14)*32+j] = X[i][j];
+                }
+            }
+            for(int i = 15; i>=14 ;i--){
+                for(int j = 0; j < 32 ; j++){
+                    X[i][j] = endianConversion[(15-i)*32+j];
+                }
             }
         }
-        for(int i = 15; i>=14 ;i--){
-            for(int j = 0; j < 32 ; j++){
-                 X[i][j] = endianConversion[(15-i)*32+j];
+        /*for(int i = 0; i<16 ;i++){
+            if(i < 14 || (i < 16 && numberBlocks-1>j))
+                displayAsHex(littleEndian2Blocks(X[i]),32);
+            else
+                displayAsHex(X[i],32);
+        }*/
 
-            }
-        }
 
 
         for(int i = 0; i < 64 ; i++){
@@ -134,7 +142,9 @@ int main()
 
 
             // on passe X[k] en little endian
-            if(i < 14)
+            if((i < 14))
+                X[k] = littleEndian2Blocks(X[k]);
+            else if(i < 16 && (numberBlocks-1)>j)
                 X[k] = littleEndian2Blocks(X[k]);
 
             char *sin = IntToBinary(T[i]);
@@ -195,8 +205,8 @@ int main()
             displayAsHex(X[k],32);
 
             printf("S => %d",s);
-            printf("\n");
-*/
+            printf("\n");*/
+
             free(firstAddition);
             free(firstAdditionBis);
             free(secondAddition);
@@ -210,8 +220,9 @@ int main()
             /*displayAsHex(ABit,32);
             displayAsHex(BBit,32);
             displayAsHex(CBit,32);
-            displayAsHex(DBit,32);
-            system("pause");*/
+            displayAsHex(DBit,32);system("pause");
+            */
+
         }
 
         ABit = AdditionBit(ABit,AA);
@@ -219,10 +230,15 @@ int main()
         CBit = AdditionBit(CBit,CC);
         DBit = AdditionBit(DBit,DD);
 
-        displayAsHex(ABit,32);
+        AA = copyArray(ABit);
+        BB = copyArray(BBit);
+        CC = copyArray(CBit);
+        DD = copyArray(DBit);
+
+        /*displayAsHex(ABit,32);
         displayAsHex(BBit,32);
         displayAsHex(CBit,32);
-        displayAsHex(DBit,32);
+        displayAsHex(DBit,32);*/
     }
 
     // TODO : corriger la fin du calcul du MD5
