@@ -99,26 +99,24 @@ int main()
     // ne marche absolument pas pour le moment
 
     char *roundResult;
-    char *AA = newString(32);
-    char *BB = newString(32);
-    char *CC = newString(32);
-    char *DD = newString(32);
 
-    BB = strcpy(BB,BBit);
-    CC = strcpy(CC,CBit);
-    DD = strcpy(DD,DBit);
+    char *AA = copyArray(ABit);
+    char *BB = copyArray(BBit);
+    char *CC = copyArray(CBit);
+    char *DD = copyArray(DBit);
 
     for(int j = 0;j < 16;j++){
 
         for(int i = 0; i < 64 ; i++){
 
-            char *firstAddition,*secondAddition,*finalAddition;
+            char *firstAddition,*firstAdditionBis,*secondAddition,*finalAddition;
             int k=ArraysUtils::KValues[i];
             int s=ArraysUtils::SValues[i];
 
             if(i < 16){
 
-                firstAddition = AdditionBit(ABit,FBit(BBit,CBit,DBit));
+                firstAdditionBis = FBit(BBit,CBit,DBit);
+                firstAddition = AdditionBit(ABit,firstAdditionBis);
                 secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
                 finalAddition = AdditionBit(firstAddition,secondAddition);
 
@@ -150,13 +148,34 @@ int main()
             }
 
             free(firstAddition);
+            free(firstAdditionBis);
             free(secondAddition);
             free(finalAddition);
 
-            ABit = DBit;
-            DBit = CBit;
-            CBit = BBit;
-            BBit = roundResult;
+            /*for(int o = 0;o < 32;o++){
+                printf("%d",DBit[o]);
+                if((o+1)%4 == 0)
+                    printf(" ");
+            }
+            printf("\n");
+            for(int o = 0;o < 32;o++){
+                printf("%d",ABit[o]);
+                if((o+1)%4 == 0)
+                    printf(" ");
+            }
+            printf("\n");
+
+            for(int o = 0;o < 32;o++){
+                printf("%d",ABit[o]);
+                if((o+1)%4 == 0)
+                    printf(" ");
+            }
+            system("pause");*/
+
+            ABit = copyArray(DBit);
+            DBit = copyArray(CBit);
+            CBit = copyArray(BBit);
+            BBit = copyArray(roundResult);
         }
 
         ABit = AdditionBit(ABit,AA);

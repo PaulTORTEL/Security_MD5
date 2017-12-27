@@ -63,7 +63,7 @@ char** segmentMessage(char* message, int length) {
 
         unsigned char temp = message[i];
 
-        for (int j = 7; j >= 0; j--) {
+        for (int j = 0; j < 8; j++) {
             result[counter][(i*8)%32 + j] = temp % 2;
             temp /= 2;
         }
@@ -249,6 +249,16 @@ char *appendArrays(char* array1,char* array2,char* array3,char* array4 ) {
             result[i] = array3[i%32];
         else
             result[i] = array4[i%32];
+    }
+
+    return result;
+}
+
+char *copyArray(char *array2){
+
+    char *result = newString(32);
+    for(int i = 0; i < 32; i++){
+        result[i] = array2[i];
     }
 
     return result;
