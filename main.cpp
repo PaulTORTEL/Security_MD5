@@ -6,10 +6,10 @@
 
 int main()
 {
-    unsigned char wordA[4] = {(unsigned char)'\x01',(unsigned char)'\x23',(unsigned char)'\x45',(unsigned char)'\x67'};
-    unsigned char wordB[4] = {(unsigned char)'\x89',(unsigned char)'\xab',(unsigned char)'\xcd',(unsigned char)'\xef'};
-    unsigned char wordC[4] = {(unsigned char)'\xfe',(unsigned char)'\xdc',(unsigned char)'\xba',(unsigned char)'\x98'};
-    unsigned char wordD[4] = {(unsigned char)'\x76',(unsigned char)'\x54',(unsigned char)'\x32',(unsigned char)'\x10'};
+    unsigned char wordA[4] = {(unsigned char)'\x67',(unsigned char)'\x45',(unsigned char)'\x23',(unsigned char)'\x01'};
+    unsigned char wordB[4] = {(unsigned char)'\xef',(unsigned char)'\xcd',(unsigned char)'\xab',(unsigned char)'\x89'};
+    unsigned char wordC[4] = {(unsigned char)'\x98',(unsigned char)'\xba',(unsigned char)'\xdc',(unsigned char)'\xfe'};
+    unsigned char wordD[4] = {(unsigned char)'\x10',(unsigned char)'\x32',(unsigned char)'\x54',(unsigned char)'\x76'};
 
     char *ABit = HexToBinary(wordA);
     char *BBit = HexToBinary(wordB);
@@ -50,6 +50,9 @@ int main()
                 newPassword[i] = '\x00';
         }
     }
+
+
+
     for (unsigned int i = 0; i < totalSize; i++) {
         std::cout << i+1 << " => " << std::bitset<8>(newPassword[i]) << std::endl;
     }
@@ -92,43 +95,62 @@ int main()
             printf("\n");
         }
     }
+    char *endianConversion = newString(64);
+    for(int i = 14; i< 16;i++){
+        for(int j = 0; j < 32 ; j++){
+            endianConversion[(i-14)*32+j] = X[i][j];
+        }
+    }
+    for(int i = 15; i>=14 ;i--){
+        for(int j = 0; j < 32 ; j++){
+             X[i][j] = endianConversion[(15-i)*32+j];
 
-
-
+        }
+    }
     // main loop
     // ne marche absolument pas pour le moment
 
     char *roundResult;
 
+    char *finalRoundResult;
     char *AA = copyArray(ABit);
     char *BB = copyArray(BBit);
     char *CC = copyArray(CBit);
     char *DD = copyArray(DBit);
 
-    for(int j = 0;j < 16;j++){
+    for(int j = 0;j < 1;j++){
 
         for(int i = 0; i < 64 ; i++){
 
             char *firstAddition,*firstAdditionBis,*secondAddition,*finalAddition;
             int k=ArraysUtils::KValues[i];
+
+
+            // on passe X[k] en little endian
+            if(i < 14)
+                X[k] = littleEndian2Blocks(X[k]);
+            char *sin = IntToBinary(T[i]);
             int s=ArraysUtils::SValues[i];
 
             if(i < 16){
 
                 firstAdditionBis = FBit(BBit,CBit,DBit);
                 firstAddition = AdditionBit(ABit,firstAdditionBis);
-                secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
+                secondAddition = AdditionBit(X[k],sin);
                 finalAddition = AdditionBit(firstAddition,secondAddition);
 
                 roundResult = shiftArrayByS(finalAddition,s,32);
+                finalRoundResult = AdditionBit(roundResult,BBit);
             }
             else if(i < 32){
 
-                firstAddition = AdditionBit(ABit,GBit(BBit,CBit,DBit));
+                firstAdditionBis = GBit(BBit,CBit,DBit);
+                firstAddition = AdditionBit(ABit,firstAdditionBis);
                 secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
                 finalAddition = AdditionBit(firstAddition,secondAddition);
 
                 roundResult = shiftArrayByS(finalAddition,s,32);
+                finalRoundResult = AdditionBit(roundResult,BBit);
             }
             else if(i < 48){
 
@@ -137,6 +159,7 @@ int main()
                 finalAddition = AdditionBit(firstAddition,secondAddition);
 
                 roundResult = shiftArrayByS(finalAddition,s,32);
+                finalRoundResult = AdditionBit(roundResult,BBit);
             }
             else{
 
@@ -145,65 +168,82 @@ int main()
                 finalAddition = AdditionBit(firstAddition,secondAddition);
 
                 roundResult = shiftArrayByS(finalAddition,s,32);
+                finalRoundResult = AdditionBit(roundResult,BBit);
             }
+
+
+            printf("ABit => ");
+            displayAsHex(ABit,32);
+
+
+            printf("FF => ");
+            displayAsHex(firstAdditionBis,32);
+
+            printf("ki => ");
+            displayAsHex(sin,32);
+
+            printf("Xk => ");
+            displayAsHex(X[k],32);
+
+            printf("S => %d",s);
+            printf("\n");
+
+
 
             free(firstAddition);
             free(firstAdditionBis);
             free(secondAddition);
             free(finalAddition);
 
-            /*for(int o = 0;o < 32;o++){
-                printf("%d",DBit[o]);
-                if((o+1)%4 == 0)
-                    printf(" ");
-            }
-            printf("\n");
-            for(int o = 0;o < 32;o++){
-                printf("%d",ABit[o]);
-                if((o+1)%4 == 0)
-                    printf(" ");
-            }
-            printf("\n");
-
-            for(int o = 0;o < 32;o++){
-                printf("%d",ABit[o]);
-                if((o+1)%4 == 0)
-                    printf(" ");
-            }
-            system("pause");*/
-
             ABit = copyArray(DBit);
+
             DBit = copyArray(CBit);
+
             CBit = copyArray(BBit);
-            BBit = copyArray(roundResult);
+
+            BBit = copyArray(finalRoundResult);
+            displayAsHex(ABit,32);
+            displayAsHex(BBit,32);
+            displayAsHex(CBit,32);
+            displayAsHex(DBit,32);
+            //system("pause");
         }
 
         ABit = AdditionBit(ABit,AA);
         BBit = AdditionBit(BBit,BB);
         CBit = AdditionBit(CBit,CC);
         DBit = AdditionBit(DBit,DD);
+
+        ABit = copyArray(DBit);
+        displayAsHex(ABit,32);
+        DBit = copyArray(CBit);
+        displayAsHex(DBit,32);
+        CBit = copyArray(BBit);
+        displayAsHex(CBit,32);
+        BBit = copyArray(finalRoundResult);
+        displayAsHex(BBit,32);
+       // system("pause");
+
+
     }
-    char *resultA = reverseArray(ABit,32);
+
+    // TODO : corriger la fin du calcul du MD5
+   /* char *resultA = reverseArray(ABit,32);
     char *resultB = reverseArray(BBit,32);
     char *resultC = reverseArray(CBit,32);
-    char *resultD = reverseArray(DBit,32);
+    char *resultD = reverseArray(DBit,32);*/
 
-    char *finalMessage = appendArrays(resultA,resultB,resultC,resultD);
+    char *finalMessage = appendArrays(ABit,BBit,CBit,DBit);
 
-    for(int i = 0; i < 128; i++){
-        printf("%d",finalMessage[i]);
-        if((i+1)%4 == 0)
-            printf(" ");
-        if((i+1)%16 == 0)
-            printf("\n");
-    }
+    displayAsHex(finalMessage,128);
 
     free(roundResult);
+    free(finalRoundResult);
 
-    free(resultA);
+   /* free(resultA);
     free(resultB);
     free(resultC);
-    free(resultD);
+    free(resultD);*/
 
     free(ABit);
     free(BBit);
