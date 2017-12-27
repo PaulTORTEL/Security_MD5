@@ -36,7 +36,7 @@ int numberOfBlocks(int passwordLen){
     return blocks;
 }
 
-void intToHex(int numberBlocks,int passwordLen,unsigned char* blocks) {
+void intToHex(int numberBlocks,int passwordLen,char* blocks) {
 
     // We calculate each block, then we divide by 256 : 256 = 2^8, meaning the binary number will be pushed by 8 bits to the right
     // for example 111100000001111 / 256 = 11110000
@@ -63,7 +63,7 @@ char** segmentMessage(char* message, int length) {
 
         unsigned char temp = message[i];
 
-        for (int j = 7; j >= 0; j--) {
+        for (int j = 7; j >=0; j--) {
             result[counter][(i*8)%32 + j] = temp % 2;
             temp /= 2;
         }

@@ -4,7 +4,7 @@
 char* newString(int length);
 int padding(int passwordLen);
 int numberOfBlocks(int passwordLen);
-void intToHex(int numberBlocks,int passwordLen,unsigned char* blocks);
+void intToHex(int numberBlocks,int passwordLen,char* blocks);
 char** segmentMessage(char* message, int length);
 
 char* FBit(char X[32], char Y[32], char Z[32]);

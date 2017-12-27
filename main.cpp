@@ -21,7 +21,7 @@ int main()
     generator.generatePws();
     generator.displayPws();*/
 
-    std::string password = "BONJOUR"/*, VRAIMENT TRES PEU POUR ETRE HEUREUX, IL FAUT SE SATISFAIRE DU NECESSAIRE"*/;
+    std::string password = "BONJOUR";
     int bytesMissing = padding(password.length());
     unsigned int totalSize = password.length() + 1 + 8 + bytesMissing;
 
@@ -29,7 +29,7 @@ int main()
 
     int numberBlocks = numberOfBlocks(password.length());
 
-    unsigned char* blocks = (unsigned char*) malloc(numberBlocks * sizeof(unsigned char*));
+    char* blocks = newString(64);
     intToHex(numberBlocks,password.length()*8,blocks);
 
     for (unsigned int i = 0; i < totalSize; i++) {
@@ -84,6 +84,7 @@ int main()
     // main loop
 
     char *roundResult;
+
     char *finalRoundResult;
     char *AA = copyArray(ABit);
     char *BB = copyArray(BBit);
@@ -93,7 +94,7 @@ int main()
     char **passwordBeforeHash = passwordReadyToHash(newPassword,numberBlocks);
 
 
-    for(int j = 0;j < numberBlocks;j++){
+    for(int j = 0;j < 1/*numberBlocks*/;j++){
 
 
         // M is the segmented Message converted in bits
@@ -130,6 +131,7 @@ int main()
 
             char *firstAddition,*firstAdditionBis,*secondAddition,*finalAddition;
             int k=ArraysUtils::KValues[i];
+
 
             // on passe X[k] en little endian
             if(i < 14)
@@ -179,7 +181,8 @@ int main()
                 finalRoundResult = AdditionBit(roundResult,BBit);
             }
 
-           /* printf("ABit => ");
+
+            /*printf("ABit => ");
             displayAsHex(ABit,32);
 
             printf("FF => ");
@@ -192,9 +195,10 @@ int main()
             displayAsHex(X[k],32);
 
             printf("S => %d",s);
-            printf("\n");*/
-
+            printf("\n");
+*/
             free(firstAddition);
+            free(firstAdditionBis);
             free(secondAddition);
             free(finalAddition);
 
@@ -203,11 +207,11 @@ int main()
             CBit = copyArray(BBit);
             BBit = copyArray(finalRoundResult);
 
-           /* displayAsHex(ABit,32);
+            /*displayAsHex(ABit,32);
             displayAsHex(BBit,32);
             displayAsHex(CBit,32);
-            displayAsHex(DBit,32);*/
-            //system("pause");
+            displayAsHex(DBit,32);
+            system("pause");*/
         }
 
         ABit = AdditionBit(ABit,AA);
@@ -219,7 +223,6 @@ int main()
         displayAsHex(BBit,32);
         displayAsHex(CBit,32);
         displayAsHex(DBit,32);
-
     }
 
     // TODO : corriger la fin du calcul du MD5
