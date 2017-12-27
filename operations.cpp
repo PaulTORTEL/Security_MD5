@@ -25,26 +25,26 @@ int padding(int passwordLen) {
 int numberOfBlocks(int passwordLen){
 
     int blocks = 0;
-    int i = 1;
+    int i = 0;
 
     // We have to know how large is the number representing the length of the password
     // So we have to calculate how many bits we need to represent it, and we work with blocs of 8 bits
     while(passwordLen > i){
         blocks++;
-        i=i*256;
+        i+=64;
     }
     return blocks;
 }
 
-void intToHex(int numberBlocks,int passwordLen,char* blocks) {
+void intToHex(int numberBlocks,int passwordLen,unsigned char* blocks) {
 
     // We calculate each block, then we divide by 256 : 256 = 2^8, meaning the binary number will be pushed by 8 bits to the right
     // for example 111100000001111 / 256 = 11110000
     for(int i = 0;i<numberBlocks;i++){
         blocks[i] = passwordLen%(256);
         passwordLen = passwordLen/256;
-
     }
+
 }
 
 char** segmentMessage(char* message, int length) {
@@ -321,4 +321,18 @@ void displayBitTable(char *table, long tabsize)
         }
     }
     std::cout << std::endl;
+}
+
+char **passwordReadyToHash(char *newPassword,int numberBlocks){
+
+
+    char **result = (char**) malloc(numberBlocks * sizeof(char*));
+    for(int i = 0; i < numberBlocks;i++){
+        result[i] = newString(64);
+
+        for(int j = 0; j < 64; j++){
+            result[i][j] = newPassword[i*64 + j];
+        }
+    }
+    return result;
 }

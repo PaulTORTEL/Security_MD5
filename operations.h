@@ -4,7 +4,7 @@
 char* newString(int length);
 int padding(int passwordLen);
 int numberOfBlocks(int passwordLen);
-void intToHex(int numberBlocks,int passwordLen,char* blocks);
+void intToHex(int numberBlocks,int passwordLen,unsigned char* blocks);
 char** segmentMessage(char* message, int length);
 
 char* FBit(char X[32], char Y[32], char Z[32]);
@@ -24,6 +24,7 @@ char *copyArray(char *array2);
 char *littleEndian2Blocks(char *array);
 void displayAsHex(char *table, long tabsize);
 void displayBitTable(char *table, long tabsize);
+char **passwordReadyToHash(char *newPassword,int numberBlocks);
 
 
 #endif // OPERATIONS_H_INCLUDED

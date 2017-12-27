@@ -21,14 +21,15 @@ int main()
     generator.generatePws();
     generator.displayPws();*/
 
-    std::string password = "BONJOUR";
+    std::string password = "BONJOUR"/*, VRAIMENT TRES PEU POUR ETRE HEUREUX, IL FAUT SE SATISFAIRE DU NECESSAIRE"*/;
     int bytesMissing = padding(password.length());
     unsigned int totalSize = password.length() + 1 + 8 + bytesMissing;
 
     char* newPassword = newString(totalSize);
 
     int numberBlocks = numberOfBlocks(password.length());
-    char* blocks = newString(numberBlocks);
+
+    unsigned char* blocks = (unsigned char*) malloc(numberBlocks * sizeof(unsigned char*));
     intToHex(numberBlocks,password.length()*8,blocks);
 
     for (unsigned int i = 0; i < totalSize; i++) {
@@ -80,35 +81,7 @@ int main()
 
     printf("\n\nle M :\n");
 
-    // M is the segmented Message converted in bits
-    char** X = segmentMessage(newPassword, totalSize);
-
-    for (int counter = 0; counter < 16; counter++) {
-
-        for (int i = 0; i < 4; i++) {
-
-            printf("%d (%c) => ", counter*4+i+1, newPassword[counter*4 + i]);
-
-            for (int j = 0; j < 8; j++)
-                printf("%d ", X[counter][(i*8)%32 + j]);
-
-            printf("\n");
-        }
-    }
-    char *endianConversion = newString(64);
-    for(int i = 14; i< 16;i++){
-        for(int j = 0; j < 32 ; j++){
-            endianConversion[(i-14)*32+j] = X[i][j];
-        }
-    }
-    for(int i = 15; i>=14 ;i--){
-        for(int j = 0; j < 32 ; j++){
-             X[i][j] = endianConversion[(15-i)*32+j];
-
-        }
-    }
     // main loop
-    // ne marche absolument pas pour le moment
 
     char *roundResult;
     char *finalRoundResult;
@@ -117,7 +90,41 @@ int main()
     char *CC = copyArray(CBit);
     char *DD = copyArray(DBit);
 
-    for(int j = 0;j < 1;j++){
+    char **passwordBeforeHash = passwordReadyToHash(newPassword,numberBlocks);
+
+
+    for(int j = 0;j < numberBlocks;j++){
+
+
+        // M is the segmented Message converted in bits
+        //char** X = segmentMessage(newPassword, totalSize);
+        char** X = segmentMessage(passwordBeforeHash[j], 64);
+
+        for (int counter = 0; counter < 16; counter++) {
+
+            for (int i = 0; i < 4; i++) {
+
+                printf("%d (%c) => ", counter*4+i+1, passwordBeforeHash[j][counter*4 + i]);
+
+                for (int j = 0; j < 8; j++)
+                    printf("%d ", X[counter][(i*8)%32 + j]);
+
+                printf("\n");
+            }
+        }
+        char *endianConversion = newString(64);
+        for(int i = 14; i< 16;i++){
+            for(int j = 0; j < 32 ; j++){
+                endianConversion[(i-14)*32+j] = X[i][j];
+            }
+        }
+        for(int i = 15; i>=14 ;i--){
+            for(int j = 0; j < 32 ; j++){
+                 X[i][j] = endianConversion[(15-i)*32+j];
+
+            }
+        }
+
 
         for(int i = 0; i < 64 ; i++){
 
@@ -127,8 +134,10 @@ int main()
             // on passe X[k] en little endian
             if(i < 14)
                 X[k] = littleEndian2Blocks(X[k]);
+
             char *sin = IntToBinary(T[i]);
             int s=ArraysUtils::SValues[i];
+
             if(i < 16){
 
                 firstAdditionBis = FBit(BBit,CBit,DBit);
@@ -151,7 +160,8 @@ int main()
             }
             else if(i < 48){
 
-                firstAddition = AdditionBit(ABit,HBit(BBit,CBit,DBit));
+                firstAdditionBis = HBit(BBit,CBit,DBit);
+                firstAddition = AdditionBit(ABit,firstAdditionBis);
                 secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
                 finalAddition = AdditionBit(firstAddition,secondAddition);
 
@@ -160,7 +170,8 @@ int main()
             }
             else{
 
-                firstAddition = AdditionBit(ABit,IBit(BBit,CBit,DBit));
+                firstAdditionBis = IBit(BBit,CBit,DBit);
+                firstAddition = AdditionBit(ABit,firstAdditionBis);
                 secondAddition = AdditionBit(X[k],IntToBinary(T[i]));
                 finalAddition = AdditionBit(firstAddition,secondAddition);
 
@@ -168,7 +179,7 @@ int main()
                 finalRoundResult = AdditionBit(roundResult,BBit);
             }
 
-            printf("ABit => ");
+           /* printf("ABit => ");
             displayAsHex(ABit,32);
 
             printf("FF => ");
@@ -181,25 +192,21 @@ int main()
             displayAsHex(X[k],32);
 
             printf("S => %d",s);
-            printf("\n");
-
-
+            printf("\n");*/
 
             free(firstAddition);
             free(secondAddition);
             free(finalAddition);
 
             ABit = copyArray(DBit);
-
             DBit = copyArray(CBit);
-
             CBit = copyArray(BBit);
-
             BBit = copyArray(finalRoundResult);
-            displayAsHex(ABit,32);
+
+           /* displayAsHex(ABit,32);
             displayAsHex(BBit,32);
             displayAsHex(CBit,32);
-            displayAsHex(DBit,32);
+            displayAsHex(DBit,32);*/
             //system("pause");
         }
 
@@ -208,36 +215,30 @@ int main()
         CBit = AdditionBit(CBit,CC);
         DBit = AdditionBit(DBit,DD);
 
-        ABit = copyArray(DBit);
         displayAsHex(ABit,32);
-        DBit = copyArray(CBit);
-        displayAsHex(DBit,32);
-        CBit = copyArray(BBit);
-        displayAsHex(CBit,32);
-        BBit = copyArray(finalRoundResult);
         displayAsHex(BBit,32);
-       // system("pause");
-
+        displayAsHex(CBit,32);
+        displayAsHex(DBit,32);
 
     }
 
     // TODO : corriger la fin du calcul du MD5
-   /* char *resultA = reverseArray(ABit,32);
-    char *resultB = reverseArray(BBit,32);
-    char *resultC = reverseArray(CBit,32);
-    char *resultD = reverseArray(DBit,32);*/
+    char *resultA = littleEndian2Blocks(ABit);
+    char *resultB = littleEndian2Blocks(BBit);
+    char *resultC = littleEndian2Blocks(CBit);
+    char *resultD = littleEndian2Blocks(DBit);
 
-    char *finalMessage = appendArrays(ABit,BBit,CBit,DBit);
+    char *finalMessage = appendArrays(resultA,resultB,resultC,resultD);
 
     displayAsHex(finalMessage,128);
 
     free(roundResult);
     free(finalRoundResult);
 
-   /* free(resultA);
+    free(resultA);
     free(resultB);
     free(resultC);
-    free(resultD);*/
+    free(resultD);
 
     free(ABit);
     free(BBit);
@@ -245,10 +246,10 @@ int main()
     free(DBit);
 
 
-    for (int i = 0; i < 16; i++)
-        free(X[i]);
+    //for (int i = 0; i < 16; i++)
+       // free(X[i]);
 
-    free(X);
+    //free(X);
     free(newPassword);
     free(blocks);
 }
