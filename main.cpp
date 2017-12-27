@@ -21,7 +21,7 @@ int main()
     generator.generatePws();
     generator.displayPws();*/
 
-    std::string password = "BONJOUR";
+    std::string password = "BONJOURBONJOURBONJOURBONJOURBONJOURBONJOUR";
     int bytesMissing = padding(password.length());
     unsigned int totalSize = password.length() + 1 + 8 + bytesMissing;
 
@@ -29,8 +29,9 @@ int main()
 
     int numberBlocks = numberOfBlocks(password.length());
 
-    char* blocks = newString(64);
-    intToHex(numberBlocks,password.length()*8,blocks);
+    // "blocks" stores the size of the message
+    char* blocks = newString(8);
+    int numberLinesPadding = intToHex(password.length()*8,blocks);
 
     for (unsigned int i = 0; i < totalSize; i++) {
 
@@ -44,7 +45,7 @@ int main()
             newPassword[i] = '\x00';
 
         else{
-            if(i >= totalSize - numberBlocks)
+            if(i >= totalSize - numberLinesPadding)
                 newPassword[i] = blocks[(totalSize-i)-1]; //Last block :newPassword[i] = blocks[0] ; i < totalSize => we need to remove 1 to totalSize-i
                                                           //or we can never reach blocks[0], because i is always smaller
             else
@@ -92,7 +93,6 @@ int main()
     char *DD = copyArray(DBit);
 
     char **passwordBeforeHash = passwordReadyToHash(newPassword,numberBlocks);
-
 
     for(int j = 0;j < 1/*numberBlocks*/;j++){
 
