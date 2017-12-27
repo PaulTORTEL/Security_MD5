@@ -11,6 +11,7 @@ class PwGenerator
     private:
         int _noPws;
         std::map<std::string, std::string> _idsPws;
+        std::map<std::string, char*> _idsHashedPws;
 
     public:
         PwGenerator();
@@ -18,6 +19,8 @@ class PwGenerator
 
         void generatePws();
         void displayPws();
+
+        void hashPasswords();
 
 
     private:

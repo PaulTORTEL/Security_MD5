@@ -1,28 +1,11 @@
-/*#include "operations.h"
-#include "Utils.h"
+#include "MD5.h"
+#include "operations.h"
 #include "ArraysUtils.h"
 #include <bitset>
-#include <math.h>*/
-#include "MD5.h"
-#include "PwGenerator.h"
+#include <math.h>
 
+char* MD5::encrypt(std::string password) {
 
-int main()
-{
-/*
-    PwGenerator generator = PwGenerator();
-    generator.generatePws();
-    //generator.displayPws();
-    generator.hashPasswords();*/
-
-
-    std::string password = "bonjour ahah ça va? ioahze uh udahaha HHIAZ Ehu ohUHPUHURpr= == === 9JIFZF HHiohi hscvn lsdn seiz_t_'_u_uàçudfsd f55664s df^$^ù$s ùfsù f$ùzt$ù $'-ù$(èù '($ù$ùfs $ùù$   HUSFUHSFH";
-    char* hashedPw = MD5::encrypt(password);
-
-    free(hashedPw);
-
-
-    /*
     unsigned char wordA[4] = {(unsigned char)'\x67',(unsigned char)'\x45',(unsigned char)'\x23',(unsigned char)'\x01'};
     unsigned char wordB[4] = {(unsigned char)'\xef',(unsigned char)'\xcd',(unsigned char)'\xab',(unsigned char)'\x89'};
     unsigned char wordC[4] = {(unsigned char)'\x98',(unsigned char)'\xba',(unsigned char)'\xdc',(unsigned char)'\xfe'};
@@ -31,12 +14,8 @@ int main()
     char *ABit = HexToBinary(wordA);
     char *BBit = HexToBinary(wordB);
     char *CBit = HexToBinary(wordC);
-    char *DBit = HexToBinary(wordD);*/
+    char *DBit = HexToBinary(wordD);
 
-/*
-    *//*
-
-    std::string password = "azeioekfe zjezjef jefzpofz ejopz fj_'éo^'jéjo'$ ze$ze)oorékré)ri à(i'i- i'()'(i )-'( -'(6+4( -456-' (465' 4654 68('468 -'465851sd g1sf15sdf8 486rz qrzeezqrojkrzPKEZR KKK'(-èç fzeà 't(_çàote ri i(t(-(^-(ù-$(-ù(^-(:-!;,,(;-(,-; (:;-(,-;(;-(k-l (;-er,:sq;,;zetr,qz'm:t;'zpmtqz:;'k ltm:qzktzm':;t ,'qt 6tq5";
     int bytesMissing = padding(password.length());
     unsigned int totalSize = password.length() + 1 + 8 + bytesMissing;
 
@@ -84,7 +63,7 @@ int main()
 
         /*
         std::cout << T[i];
-        std::cout << " => " << std::bitset<32>(T[i]) << std::endl;*//*
+        std::cout << " => " << std::bitset<32>(T[i]) << std::endl;*/
     }
 
     // main loop
@@ -139,7 +118,7 @@ int main()
                 displayAsHex(littleEndian2Blocks(X[i]),32);
             else
                 displayAsHex(X[i],32);
-        }*//*
+        }*/
 
 
         for(int i = 0; i < 64 ; i++) {
@@ -212,7 +191,7 @@ int main()
             displayAsHex(X[k],32);
 
             printf("S => %d",s);
-            printf("\n");*//*
+            printf("\n");*/
 
             free(firstAddition);
             free(firstAdditionBis);
@@ -236,7 +215,7 @@ int main()
             displayAsHex(BBit,32);
             displayAsHex(CBit,32);
             displayAsHex(DBit,32);system("pause");
-            *//*
+            */
 
         }
 
@@ -264,7 +243,7 @@ int main()
         /*displayAsHex(ABit,32);
         displayAsHex(BBit,32);
         displayAsHex(CBit,32);
-        displayAsHex(DBit,32);*//*
+        displayAsHex(DBit,32);*/
     }
 
     char *resultA = littleEndian2Blocks(ABit);
@@ -290,7 +269,7 @@ int main()
         free(passwordBeforeHash[i]);
 
     free(passwordBeforeHash);
-    free(hashedPassword);
+    //free(hashedPassword);
 
 
     //for (int i = 0; i < 16; i++)
@@ -298,5 +277,7 @@ int main()
 
     //free(X);
     free(newPassword);
-    free(blocks);*/
+    free(blocks);
+
+    return hashedPassword;
 }

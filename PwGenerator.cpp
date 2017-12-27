@@ -1,4 +1,6 @@
 #include "PwGenerator.h"
+#include "MD5.h"
+#include "operations.h"
 
 PwGenerator::PwGenerator()
 {
@@ -7,7 +9,11 @@ PwGenerator::PwGenerator()
 
 PwGenerator::~PwGenerator()
 {
+    std::map<std::string, char*>::iterator it;
 
+    for (it = _idsHashedPws.begin(); it != _idsHashedPws.end(); ++it) {
+        free(_idsHashedPws[it->first]);
+    }
 }
 
 void PwGenerator::generatePws() {
@@ -50,4 +56,22 @@ std::string PwGenerator::genRandString(const int length) {
 
 
     return result;
+}
+
+void PwGenerator::hashPasswords() {
+
+    std::map<std::string, std::string>::iterator it;
+
+    for (it = _idsPws.begin(); it != _idsPws.end(); ++it) {
+        _idsHashedPws[it->first] = MD5::encrypt(it->second);
+    }
+
+    /*
+    std::map<std::string, std::string>::iterator it2;
+
+    for (it2 = _idsPws.begin(); it2 != _idsPws.end(); ++it2) {
+        std::cout << it2->first << " => " << it2->second << std::endl;
+        displayAsHex(_idsHashedPws[it2->first], 128);
+        std::cout << std::endl << std::endl;
+    }*/
 }

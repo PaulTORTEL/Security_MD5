@@ -29,7 +29,8 @@ int numberOfBlocks(int passwordLen){
 
     // We have to know how large is the number representing the length of the password
     // So we have to calculate how many bits we need to represent it, and we work with blocs of 8 bits
-    while(passwordLen > i){
+    // + 9 lines => size + 1 line with "1", in case it doesn't fit, then the no blocks is higher
+    while(passwordLen + 9 > i){
         blocks++;
         i+=64;
     }
