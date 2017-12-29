@@ -38,6 +38,8 @@
 		</Compiler>
 		<Unit filename="ArraysUtils.cpp" />
 		<Unit filename="ArraysUtils.h" />
+		<Unit filename="HMAC.cpp" />
+		<Unit filename="HMAC.h" />
 		<Unit filename="MD5.cpp" />
 		<Unit filename="MD5.h" />
 		<Unit filename="PwGenerator.cpp" />

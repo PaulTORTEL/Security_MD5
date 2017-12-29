@@ -6,6 +6,8 @@
 #include "MD5.h"
 #include "PwGenerator.h"
 
+#include "HMAC.h"
+
 
 int main()
 {
@@ -15,11 +17,16 @@ int main()
     //generator.displayPws();
     generator.hashPasswords();*/
 
-
-    std::string password = "bonjour ahah ça va? ioahze uh udahaha HHIAZ Ehu ohUHPUHURpr= == === 9JIFZF HHiohi hscvn lsdn seiz_t_'_u_uàçudfsd f55664s df^$^ù$s ùfsù f$ùzt$ù $'-ù$(èù '($ù$ùfs $ùù$   HUSFUHSFH";
+    std::string password = "49003\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\d▒ DÕ▓`v-☻@┼▬jÏ";
     char* hashedPw = MD5::encrypt(password);
 
     free(hashedPw);
+
+    HMAC();
+
+
+
+
 
 
     /*

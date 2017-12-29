@@ -39,14 +39,8 @@ int numberOfBlocks(int passwordLen){
 
 int intToHex(int passwordLen,char* blocks) {
 
-
-
     // We calculate each block, then we divide by 256 : 256 = 2^8, meaning the binary number will be pushed by 8 bits to the right
     // for example 111100000001111 / 256 = 11110000
-    /*for(int i = 0;i<numberBlocks;i++){
-        blocks[i] = passwordLen%(256);
-        passwordLen = passwordLen/256;
-    }*/
     int i = 0;
     while(passwordLen > 0){
         printf("%d ",passwordLen);
