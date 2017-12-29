@@ -4,20 +4,39 @@
 void HMAC(){
 
     // HMAC
-    std::string key = "hello";
-    std::string message = "HELLO";
+    std::string key = "azertyuiop";
+    unsigned char* hashedKey;
 
-    char *hmacKey = newString(64);
-
-    for(int i = 0; i < 64; i++){
-        if(i< key.length())
-            hmacKey[i] = key[i];
-        else
-            hmacKey[i] = 0;
+    if (key.length() > 64) {
+        char* temp = MD5::encrypt(key);
+        hashedKey = binaryToChar(temp, 128);
+        free(temp);
     }
 
-    char ipad[64];
-    char opad[64];
+    std::string message = "HELLO";
+
+    unsigned char *hmacKey = (unsigned char*)malloc(64 * sizeof(unsigned char));
+
+    if (key.length() <= 64) {
+        for(unsigned int i = 0; i < 64; i++){
+            if(i < key.length())
+                hmacKey[i] = key[i];
+            else
+                hmacKey[i] = 0;
+        }
+    } else {
+        for(int i = 0; i < 64; i++){
+            if(i < 16)
+                hmacKey[i] = hashedKey[i];
+            else
+                hmacKey[i] = 0;
+        }
+    }
+
+    free(hashedKey);
+
+    unsigned char ipad[64];
+    unsigned char opad[64];
 
     for(int i = 0; i < 64;i++){
         ipad[i] = '\x36';
@@ -33,7 +52,7 @@ void HMAC(){
     // FIRST STEP
     char *firstXOR = XOR64Bit(ipadBit,hmacKeyBit);
 
-    char *tempMessage = conversionStringChar(message);
+    unsigned char *tempMessage = conversionStringChar(message);
 
     char *messageBit = charToBinary(tempMessage,message.length());
     char *firstConcatenation = concatenation(firstXOR,512,messageBit,message.length()*8);
@@ -54,7 +73,7 @@ void HMAC(){
     char* hashedFinalMessage = MD5::encrypt(fromCharToString(Word,concatLength/8));
 }
 
-char *charToBinary(char *word,int length){
+char *charToBinary(unsigned char *word,int length){
 
     char *result = newString(length*8);
 
@@ -68,11 +87,11 @@ char *charToBinary(char *word,int length){
     return result;
 }
 
-char* conversionStringChar(std::string word){
+unsigned char* conversionStringChar(std::string word){
 
-    char *result = newString(word.length());
+    unsigned char *result = (unsigned char*)malloc(word.length() * sizeof(unsigned char));
 
-    for(int i = 0; i < word.length(); i++)
+    for(unsigned int i = 0; i < word.length(); i++)
         result[i] = word[i];
 
     return result;
@@ -138,7 +157,7 @@ int puissance(int x,int y){
     return temp;
 }
 
-std::string fromCharToString(const unsigned char *message,int length){
+std::string fromCharToString(unsigned char *message,int length){
 
     std::string s;
     for(int i = 0 ; i < length ; i++){
