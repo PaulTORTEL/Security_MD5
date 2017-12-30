@@ -74,7 +74,7 @@ void PwGenerator::displaySaltyHashedPws() {
 
     for (it = _idsSaltyHashedPws.begin(); it != _idsSaltyHashedPws.end(); ++it) {
 
-        std::cout << it->first << " Pw => " << _idsPws[it->first] << " Salt => " << it->second._salt << "\t\tHashed Salty Pw => ";
+        std::cout << it->first << " Pw => " << _idsPws[it->first] << "\tSalt => " << it->second._salt << "\t\tHashed Salty Pw => ";
         displayAsHex(it->second._hashedPassword, 128);
     }
     std::cout << std::endl;
@@ -114,9 +114,6 @@ void PwGenerator::saltAndHashPasswords() {
         // Store the result in the proper map
         _idsSaltyHashedPws[it->first] = p;
     }
-
-    //displaySaltyHashedPws();
-
 }
 
 void PwGenerator::hashPasswords() {
@@ -128,6 +125,4 @@ void PwGenerator::hashPasswords() {
         // Encrypt the password and store the result
         _idsHashedPws[it->first] = MD5::encrypt(it->second);
     }
-
-    // displayHashedPws();
 }
