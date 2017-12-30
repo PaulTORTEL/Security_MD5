@@ -22,6 +22,12 @@ int main()
 
     free(hashedPw);*/
 
-    HMAC();
+    std::string key = "azertyuiop";
+    std::string message = "HELLO";
+
+    char *messageEncrypedHMAC = HMAC::encrypt(key,message);
+    //displayAsHex(messageEncrypedHMAC,128);
+
+    free(messageEncrypedHMAC);
 
 }
