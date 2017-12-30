@@ -11,31 +11,20 @@ int main()
 
         system("CLS");
         fflush(stdin);
-        int length = 0;
-        printf("Please enter the size of your message: ");
-        scanf("%d", &length);
-        printf("\nYour message: ");
-        unsigned char* input = (unsigned char*)malloc(length*sizeof(unsigned char));
-        scanf("%49s", input);
 
-        std::string password = (char*)input;
+        printf("Your message (only ASCII characters): ");
 
-    std::cout << password << std::endl;
+        std::string password;
 
-        free(input);
-        for (unsigned int i = 0; i< password.length(); i++)
-            printf("%d ", password[i]);
+        // Put in comment this line if you want to use UTF-8 characters, and uncomment the line 23
+        std::getline(std::cin, password);
 
-        length = 0;
-        printf("\nPlease enter the size of your key: ");
-        scanf("%d", &length);
+        // Put between the "" you message with UTF-8 chars
+        //password = "type here Your Password with UTF-8 chars (if you want to!)";
 
-        char* keyInput = (char*)malloc(length*sizeof(char));
-        scanf("%49s", keyInput);
-
-        std::string key = keyInput;
-
-        free(keyInput);
+        printf("\nThe key (only ASCII characters): ");
+        std::string key;
+        std::getline(std::cin, key);
 
         char* hashedPw = MD5::encrypt(password);
 
