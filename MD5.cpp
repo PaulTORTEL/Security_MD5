@@ -61,9 +61,6 @@ char* MD5::encrypt(std::string password) {
 
         T[i] = fabs(sin((i+1))) * x;
 
-        /*
-        std::cout << T[i];
-        std::cout << " => " << std::bitset<32>(T[i]) << std::endl;*/
     }
 
     // main loop
