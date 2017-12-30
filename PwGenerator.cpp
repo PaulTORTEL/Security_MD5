@@ -26,6 +26,9 @@ PwGenerator::~PwGenerator()
 void PwGenerator::generatePws() {
 
     _idsPws.clear();
+    _idsHashedPws.clear();
+    _idsSaltyHashedPws.clear();
+
     srand (time(NULL));
 
     for (int i = 0; i < _noPws; i++) {
