@@ -357,7 +357,7 @@ void displayBitTable(char *table, long tabsize)
 // prepares the password to be hashed with the MD5 protocol
 // each block of 512 bits will be stored in a different arrays than the others blocks
 // allowing the MD5 main loop to hash each block separately
-char **passwordReadyToHash(char *newPassword,int numberBlocks){
+char **passwordReadyToHash(unsigned char *newPassword,int numberBlocks){
 
     char **result = (char**) malloc(numberBlocks * sizeof(char*));
 

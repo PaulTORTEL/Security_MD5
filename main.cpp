@@ -12,11 +12,12 @@ int main()
     generator.hashPasswords();
     generator.saltAndHashPasswords();
 */
-    /*
-    std::string password = "49003\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\d▒ DÕ▓`v-☻@┼▬jÏ";
-    char* hashedPw = MD5::encrypt(password);
 
-    free(hashedPw);*/
+    std::string password = "hello";
+    char* hashedPw = MD5::encrypt(password);
+    system("pause");
+
+    free(hashedPw);
 
     std::string key = "azertyuiop";
     std::string message = "HELLO";

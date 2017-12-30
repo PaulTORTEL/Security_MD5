@@ -6,7 +6,7 @@ char *newString(int length);
 int padding(int passwordLen);
 int numberOfBlocks(int passwordLen);
 int intToHex(int passwordLen,char* blocks);
-char **passwordReadyToHash(char *newPassword,int numberBlocks);
+char **passwordReadyToHash(unsigned char *newPassword,int numberBlocks);
 char **segmentMessage(char* message, int length);
 char *HexToBinary(unsigned char X[4]);
 
