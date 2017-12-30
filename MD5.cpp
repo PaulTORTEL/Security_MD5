@@ -46,21 +46,12 @@ char* MD5::encrypt(std::string password) {
         }
     }
 
-
-
-    for (unsigned int i = 0; i < totalSize; i++) {
-        std::cout << i+1 << " => " << std::bitset<8>(newPassword[i]) << std::endl;
-    }
-
     // Sin array
     unsigned int T[64];
 
     for(int i = 0; i < 64;i++){
-
         long long x = 4294967296;
-
         T[i] = fabs(sin((i+1))) * x;
-
     }
 
     // main loop
@@ -85,18 +76,6 @@ char* MD5::encrypt(std::string password) {
         // X is the segmented Message converted in bits
         char** X = segmentMessage(passwordBeforeHash[j], 64);
 
-        for (int counter = 0; counter < 16; counter++) {
-
-            for (int i = 0; i < 4; i++) {
-
-                printf("%d (%c) => ", counter*4+i+1, passwordBeforeHash[j][counter*4 + i]);
-
-                for (int j = 0; j < 8; j++)
-                    printf("%d ", X[counter][(i*8)%32 + j]);
-
-                printf("\n");
-            }
-        }
         if(j == numberBlocks-1){
             char *endianConversion = newString(64);
             for(int i = 14; i< 16;i++){
@@ -110,13 +89,6 @@ char* MD5::encrypt(std::string password) {
                 }
             }
         }
-        /*for(int i = 0; i<16 ;i++){
-            if(i < 14 || (i < 16 && numberBlocks-1>j))
-                displayAsHex(littleEndian2Blocks(X[i]),32);
-            else
-                displayAsHex(X[i],32);
-        }*/
-
 
         for(int i = 0; i < 64 ; i++) {
 
@@ -174,22 +146,6 @@ char* MD5::encrypt(std::string password) {
                 finalRoundResult = AdditionBit(roundResult,BBit);
             }
 
-
-            /*printf("ABit => ");
-            displayAsHex(ABit,32);
-
-            printf("FF => ");
-            displayAsHex(firstAdditionBis,32);
-
-            printf("ki => ");
-            displayAsHex(sin,32);
-
-            printf("Xk => ");
-            displayAsHex(X[k],32);
-
-            printf("S => %d",s);
-            printf("\n");*/
-
             free(firstAddition);
             free(firstAdditionBis);
             free(secondAddition);
@@ -207,13 +163,6 @@ char* MD5::encrypt(std::string password) {
 
             BBit = copyArray(finalRoundResult);
             free(finalRoundResult);
-
-            /*displayAsHex(ABit,32);
-            displayAsHex(BBit,32);
-            displayAsHex(CBit,32);
-            displayAsHex(DBit,32);system("pause");
-            */
-
         }
 
         ABit = AdditionBit(ABit,AA);
@@ -230,17 +179,6 @@ char* MD5::encrypt(std::string password) {
             free(X[o]);
 
         free(X);
-
-        /* DECALE AU DEBUT DE LA BOUCLE
-        AA = copyArray(ABit);
-        BB = copyArray(BBit);
-        CC = copyArray(CBit);
-        DD = copyArray(DBit);*/
-
-        /*displayAsHex(ABit,32);
-        displayAsHex(BBit,32);
-        displayAsHex(CBit,32);
-        displayAsHex(DBit,32);*/
     }
 
     char *resultA = littleEndian2Blocks(ABit);
@@ -250,7 +188,7 @@ char* MD5::encrypt(std::string password) {
 
     char *hashedPassword = appendArrays(resultA,resultB,resultC,resultD);
 
-    displayAsHex(hashedPassword,128);
+    //displayAsHex(hashedPassword,128);
 
     free(resultA);
     free(resultB);
@@ -266,13 +204,7 @@ char* MD5::encrypt(std::string password) {
         free(passwordBeforeHash[i]);
 
     free(passwordBeforeHash);
-    //free(hashedPassword);
 
-
-    //for (int i = 0; i < 16; i++)
-       // free(X[i]);
-
-    //free(X);
     free(newPassword);
     free(blocks);
 

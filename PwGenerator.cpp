@@ -61,10 +61,11 @@ void PwGenerator::displayHashedPws() {
     std::map<std::string, std::string>::iterator it;
 
     for (it = _idsPws.begin(); it != _idsPws.end(); ++it) {
-        std::cout << it->first << " Hashed Pw => " << it->second << std::endl;
+        std::cout << it->first << " Pw => " << it->second << "\t\tHashed Pw => ";
         displayAsHex(_idsHashedPws[it->first], 128);
-        std::cout << std::endl << std::endl;
     }
+
+    std::cout << std::endl;
 }
 
 void PwGenerator::displaySaltyHashedPws() {
@@ -73,10 +74,10 @@ void PwGenerator::displaySaltyHashedPws() {
 
     for (it = _idsSaltyHashedPws.begin(); it != _idsSaltyHashedPws.end(); ++it) {
 
-        std::cout << it->first << " Pw => " << _idsPws[it->first] << " Salt => " << it->second._salt << " Hashed Salty Pw => ";
+        std::cout << it->first << " Pw => " << _idsPws[it->first] << " Salt => " << it->second._salt << "\t\tHashed Salty Pw => ";
         displayAsHex(it->second._hashedPassword, 128);
-        std::cout << std::endl;
     }
+    std::cout << std::endl;
 }
 
 std::string PwGenerator::genRandString(const int length) {

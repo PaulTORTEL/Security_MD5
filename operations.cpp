@@ -43,7 +43,6 @@ int intToHex(int passwordLen,char* blocks) {
     // for example 111100000001111 / 256 = 11110000
     int i = 0;
     while(passwordLen > 0){
-        printf("%d ",passwordLen);
         blocks[i] = passwordLen%(256);
         passwordLen /= 256;
         i++;
