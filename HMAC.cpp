@@ -85,7 +85,7 @@ char* HMAC::encrypt(std::string key,std::string message){
     return finalWord;
 }
 
-// convert the char table to a string
+// converts the char table to a string
 char *HMAC::charToBinary(unsigned char *word,int length){
 
     char *result = newString(length*8);

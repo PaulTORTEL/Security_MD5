@@ -25,6 +25,4 @@ int main()
     //displayAsHex(messageEncrypedHMAC,128);
 
     free(messageEncrypedHMAC);
-
-
 }
