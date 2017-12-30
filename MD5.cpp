@@ -19,7 +19,10 @@ char* MD5::encrypt(std::string password) {
     int bytesMissing = padding(password.length());
     unsigned int totalSize = password.length() + 1 + 8 + bytesMissing;
 
-    char* newPassword = newString(totalSize);
+    //char* newPassword = newString(totalSize);
+    unsigned char* newPassword = (unsigned char *) malloc(totalSize * sizeof(unsigned char));
+
+
     int numberBlocks = numberOfBlocks(password.length());
 
     // "blocks" stores the size of the message
@@ -45,6 +48,7 @@ char* MD5::encrypt(std::string password) {
                 newPassword[i] = '\x00';
         }
     }
+
 
     // Sin array
     unsigned int T[64];
