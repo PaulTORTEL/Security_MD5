@@ -77,7 +77,7 @@ void PwGenerator::displaySaltyHashedPws() {
 
     for (it = _idsSaltyHashedPws.begin(); it != _idsSaltyHashedPws.end(); ++it) {
 
-        std::cout << it->first << " Pw => " << _idsPws[it->first] << "\tSalt => " << it->second._salt << "\t\tHashed Salty Pw => ";
+        std::cout << it->first << " Pw+Salt => " << _idsPws[it->first] << it->second._salt << "    Hashed => ";
         displayAsHex(it->second._hashedPassword, 128);
     }
     std::cout << std::endl;
